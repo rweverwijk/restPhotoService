@@ -1,0 +1,15 @@
+body {
+	background-color: #444444;
+}
+
+img {
+	border: 5px solid white;
+	border-bottom: 8px solid white;
+	
+}
+
+div.image {
+	float: left;
+	height: 200px;
+	width: 200px;
+}

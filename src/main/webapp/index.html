@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	<link type="text/css" rel="stylesheet" href="css/style.css"/>
+	<script src="http://code.jquery.com/jquery-latest.js"></script>
+	</head>
+	<body>
+		<div id="images"></div>
+		<script>$.getJSON("http://localhost:8080/restPhotoService/rest/photo/",
+        function(data){
+          $.each(data.Photo, function(i,item){
+            thisDiv = $("<div/>").attr("class", "image").appendTo("#images");
+            $("<img/>").attr("src", item.thumbnailUrl).appendTo(thisDiv);
+            
+          });
+        });</script>
+		
+	</body>
+</html>
