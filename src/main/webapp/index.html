@@ -7,27 +7,5 @@
 	</head>
 	<body>
 		<div id="images"></div>
-		<script>$.getJSON("http://localhost:8080/restPhotoService/rest/photo/",
-        function(data){
-          $.each(data.Photo, function(i,item){
-            thisDiv = $("<div/>").attr("class", "image").appendTo("#images");
-            $("<img/>").attr("src", item.thumbnailUrl).attr("style", "opacity: 0.50").appendTo(thisDiv);
-          });
-        });
-		jQuery(document).ready(function($) { 
-			alert("doei");
-			$("img").mouseover(function() {$(this).animate({"opacity": "1"});});
-			$("img").mouseout(function() {$(this).animate({"opacity": "0.50"});});
-			$("img").click(function() {$("<div/>").attr("id", "overlay").attr("style", "height: 1000px").appendTo("body");});
-
-			$(document).keyup(function(event) {
-			     if (event.keyCode == 27) {
-			         $("div#overlay").attr("style", "display: none;");
-			     }
-			    }
-			);
-		});
-        </script>
-		
 	</body>
 </html>

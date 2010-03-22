@@ -24,3 +24,21 @@ div#overlay {
 	width: 100%;
 	z-index: 40;
 }
+
+div#outerImageContainer {
+	top: 40px;
+	left: 0px;
+	position: absolute;
+	z-index: 100;
+	width: 100%;
+	display: none;
+}
+
+div#imageContainer {
+	margin: 0 auto;
+	position: relative;
+}
+
+div#outerImageContainer span {
+	color: #FFFFFF;
+}
