@@ -9,6 +9,7 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(name = "PhotoType")
 @XmlRootElement(name = "Photo")
 public class Photo {
+	private String id;
 	private String name;
 	private String description;
 	private String originalUrl;
@@ -18,8 +19,9 @@ public class Photo {
 		super();
 	}
 
-	public Photo(String fileName, String description, String originalUrl, String thumbnailUrl) {
+	public Photo(String id, String fileName, String description, String originalUrl, String thumbnailUrl) {
 		super();
+		this.setId(id);
 		this.name = fileName;
 		this.description = description;
 		this.originalUrl = originalUrl;
@@ -58,5 +60,17 @@ public class Photo {
 		this.thumbnailUrl = thumbnailUrl;
 	}
 
-	
+	/**
+	 * @param id the id to set
+	 */
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	@Override
+	public String toString() {
+		return "Photo [description=" + description + ", id=" + id + ", name="
+				+ name + ", originalUrl=" + originalUrl + ", thumbnailUrl="
+				+ thumbnailUrl + "]";
+	}
 }

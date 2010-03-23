@@ -12,29 +12,33 @@ $.getJSON("http://localhost:8080/restPhotoService/rest/photo/",
 		  $("img").mouseout(function() {$(this).animate({"opacity": "0.50"});});
 	
 				$(document).keyup(function(event) {
-					// esc
-					if (event.keyCode == 27) {
-						$("div#overlay").fadeOut();
-						$("div#outerImageContainer").attr("style", "display: none;");
-					} 
-					// left
-					else if (event.keyCode == 37) {
-						showImage(currentPhoto - 1);
-					}
-					// left
-					else if (event.keyCode == 39) {
-						showImage(currentPhoto + 1);
-					}
-			    }
-			);
+					documentKeyupEvent(event);
+			    });
 
+			function documentKeyupEvent(event) {
+				// esc
+				if (event.keyCode == 27) {
+					$("div#overlay").fadeOut();
+					$("div#outerImageContainer").attr("style", "display: none;");
+				} 
+				// left
+				else if (event.keyCode == 37) {
+					showImage(currentPhoto - 1);
+				}
+				// left
+				else if (event.keyCode == 39) {
+					showImage(currentPhoto + 1);
+				}
+			}
+				
 			function showImage(imageId) {
 				currentPhoto = imageId;
 				if($('#overlay').length == 0) {
 					$("<div/>").attr("id", "overlay").attr("style", "height: 1000px").appendTo("body");
 					$("<div/>").attr("id", "outerImageContainer").appendTo("body");
 					$("<div/>").attr("id", "imageContainer").appendTo("#outerImageContainer");
-					$("<span/>").attr("id", "imageTitle").appendTo("#imageContainer");
+					$("<div/>").attr("id", "imageTitle").appendTo("#imageContainer");
+					$("#imageTitle").click(function(){showEditImageTitle();});
 					$("<img/>").attr("id", "image").appendTo("#imageContainer");
 				}
 				$("#imageTitle").text(photoes[imageId].name);
@@ -43,14 +47,49 @@ $.getJSON("http://localhost:8080/restPhotoService/rest/photo/",
 					enlargeImageContainer(preloadNextImage);
 				} 
 				preloadNextImage.src = photoes[imageId].originalUrl;
-				$("#image").attr("src", photoes[imageId].originalUrl);
-				
+				$("#image").attr("src", photoes[imageId].originalUrl);				
 			}
 
 			function enlargeImageContainer(image) {
 				$("#imageContainer").attr("style", "width: " + image.width + "px");
 				$("div#overlay").fadeIn(50);
 				$("#outerImageContainer").fadeIn(50);
+			}
+			
+			function showEditImageTitle() {
+				$("<input />").attr("type", "text").attr("id", "imageTitleInput").attr("value", $("#imageTitle").text()).insertBefore("#imageTitle");
+				$("#imageTitle").hide();
+				$("#imageTitleInput").focus();
+				
+				$("#imageTitleInput").focusout(function(){
+					editImageTitle();
+				});
+				
+				$("#imageTitleInput").keyup(function(event) {
+					if (event.keyCode == 13) {
+						editImageTitle();	
+					}
+			    });
+			}
+			
+			function editImageTitle() {
+				$("#imageTitle").text($("#imageTitleInput").val());
+				$("#imageTitleInput").remove();
+				$("#imageTitle").show();
+//curl -v -X POST --data-binary "{\"id\":\"IMG_2986.jpg\",\"name\":\"IMG_2986.jpg\",\"description\":\"pietjeIMG_2986.jpg\",\"originalUrl\":\"images/IMG_2986.jpg\",\"thumbnailUrl\":\"images/small/IMG_2986.jpg\"}" -H"Content-Type: application/json" -H"Accept: application/json" http://localhost:8080/restPhotoService/rest/photo
+				$.ajax({
+					url:'http://localhost:8080/restPhotoService/rest/photo/',
+					type:'POST',
+					data: '{"id":"IMG_2986.jpg","name":"IMG_2986.jpg","description":"pietjeIMG_2986.jpg","originalUrl":"images/IMG_2986.jpg","thumbnailUrl":"images/small/IMG_2986.jpg"}',
+					dataType: 'application/json',
+					contentType: "application/json; charset=utf-8",
+					success:function(res){
+					alert("het werkt");
+					},
+					error:function(res){
+						alert("het werkt niet! " + res.statusText);
+					}
+					});
 			}
         });
 

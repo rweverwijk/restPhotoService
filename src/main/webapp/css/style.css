@@ -39,6 +39,12 @@ div#imageContainer {
 	position: relative;
 }
 
-div#outerImageContainer span {
+div#imageContainer img{
+	position: absolute;
+	left: 0px;
+	top: 30px;
+}
+
+div#outerImageContainer div#imageTitle {
 	color: #FFFFFF;
 }
