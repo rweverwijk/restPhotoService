@@ -31,7 +31,6 @@ div#outerImageContainer {
 	position: absolute;
 	z-index: 100;
 	width: 100%;
-	display: none;
 }
 
 div#imageContainer {
@@ -47,4 +46,26 @@ div#imageContainer img{
 
 div#outerImageContainer div#imageTitle {
 	color: #FFFFFF;
+}
+
+div#imageNav {
+	position: absolute;
+	top: 20px;
+	left: 0px;
+	height: 100%;
+	width: 100%;
+	z-index: 1000;
+}
+
+div#imageNav a {
+	height: 100%;
+	width: 49%;
+}
+
+a#imageNavNext {
+	float: right;
+}
+
+a#imageNavPrev {
+	float: left;
 }

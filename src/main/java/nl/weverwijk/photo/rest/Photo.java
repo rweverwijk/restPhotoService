@@ -19,7 +19,8 @@ public class Photo {
 		super();
 	}
 
-	public Photo(String id, String fileName, String description, String originalUrl, String thumbnailUrl) {
+	public Photo(String id, String fileName, String description,
+			String originalUrl, String thumbnailUrl) {
 		super();
 		this.setId(id);
 		this.name = fileName;
@@ -60,11 +61,30 @@ public class Photo {
 		this.thumbnailUrl = thumbnailUrl;
 	}
 
+	public String getId() {
+		return id;
+	}
+
 	/**
-	 * @param id the id to set
+	 * @param id
+	 *            the id to set
 	 */
 	public void setId(String id) {
 		this.id = id;
+	}
+
+	public String getDirName() {
+		if (id != null && id.lastIndexOf("\\") != -1) {
+			return id.substring(0, id.lastIndexOf("\\"));
+		}
+		return null;
+	}
+
+	public String getFileName() {
+		if (id != null && id.lastIndexOf("\\") != -1) {
+			return id.substring(id.lastIndexOf("\\"), id.length());
+		}
+		return id;
 	}
 
 	@Override
