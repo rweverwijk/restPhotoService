@@ -1,5 +1,5 @@
 body {
-	background-color: #444444;
+	background-color: #444;
 }
 
 img {
@@ -13,6 +13,14 @@ div.image {
 	height: 200px;
 	width: 200px;
 	z-index: 20;
+}
+
+div.image img {
+	border:1px solid #444;
+}
+
+.image:hover img {
+	border:1px solid #999;	
 }
 
 div#overlay {
