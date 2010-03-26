@@ -8,11 +8,16 @@ img {
 	z-index: 1;
 }
 
-div.image {
+div.image, div.directory{
 	float: left;
 	height: 200px;
 	width: 200px;
 	z-index: 20;
+}
+
+div.directory {
+	color: white;
+	font-size: 20px;
 }
 
 div.image img {

@@ -1,21 +1,62 @@
+var directories = new Array();
 var photoes = new Array();
 var currentPhoto;
+var currentDirectory = "";
 
-$.getJSON("http://localhost:8080/restPhotoService/rest/photo/",
-    function(data){
-      $.each(data.Photo, function(i,item){
-    	photoes.push(item);
-        thisDiv = $("<div/>").attr("class", "image").appendTo("#images");
-        thisImg = $("<img/>").attr("src", item.thumbnailUrl).attr("style", "opacity: 0.85").appendTo(thisDiv);
-        thisImg.click(function() {showImage(i);});
-      });
-      $("img").mouseover(function() {$(this).animate({"opacity": "1"});});
-	  $("img").mouseout(function() {$(this).animate({"opacity": "0.85"});});
+getDirectories();
+getPhotoes();
 
-		$(document).keyup(function(event) {
-			documentKeyupEvent(event);
-	    });
-});
+//directory
+function getDirectories() {
+	$.getJSON("http://localhost:8080/restPhotoService/rest/album/directory/" + currentDirectory,
+	    function(data){
+	      $.each(data.Directory, function(i,item){
+	    	directories.push(item);
+	        thisDiv = $("<div/>").attr("class", "directory").text(item).appendTo("#images");
+	        thisDiv.click(function() {
+	        	currentDirectory = currentDirectory + $(this).text() + "/";
+	        	changeDirectory();
+	        });
+	      });
+	});
+}
+
+// photo
+function getPhotoes() {
+	$.getJSON("http://localhost:8080/restPhotoService/rest/album/photo/" + currentDirectory,
+	    function(data){
+	      $.each(data.Photo, function(i,item){
+	    	photoes.push(item);
+	        thisDiv = $("<div/>").attr("class", "image").appendTo("#images");
+	        thisImg = $("<img/>").attr("src", item.thumbnailUrl).attr("style", "opacity: 0.85").appendTo(thisDiv);
+	        thisImg.click(function() {showImage(i);});
+	      });
+	      $("img").mouseover(function() {$(this).animate({"opacity": "1"});});
+		  $("img").mouseout(function() {$(this).animate({"opacity": "0.85"});});
+	
+			$(document).keyup(function(event) {
+				documentKeyupEvent(event);
+		    });
+	});
+}
+
+function changeDirectory() {
+	removeAll();
+	if (currentDirectory != null && currentDirectory != "") {
+		thisDiv = $("<div/>").attr("class", "directory").text("up").appendTo("#images");
+        thisDiv.click(function() {
+        	currentDirectory = currentDirectory.substring(0,currentDirectory.substring(0, currentDirectory.length -1).lastIndexOf("/"));
+        	changeDirectory();
+        });
+	}
+	getDirectories();
+	getPhotoes();
+}
+
+function removeAll() {
+	$(".image").remove();
+	$(".directory").remove();
+}
 
 function documentKeyupEvent(event) {
 	// esc
