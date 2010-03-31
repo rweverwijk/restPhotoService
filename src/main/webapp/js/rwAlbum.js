@@ -6,13 +6,18 @@ var currentDirectory = "";
 getDirectories();
 getPhotoes();
 
+$(document).keyup(function(event) {
+	documentKeyupEvent(event);
+});
+
 //directory
 function getDirectories() {
 	$.getJSON("http://localhost:8080/restPhotoService/rest/album/directory/" + currentDirectory,
 	    function(data){
 	      $.each(data.Directory, function(i,item){
 	    	directories.push(item);
-	        thisDiv = $("<div/>").attr("class", "directory").text(item).appendTo("#images");
+	        thisDiv = $("<div/>").attr("class", "directory").appendTo("#directories");
+	        $("<span/>").text(item).appendTo(thisDiv);
 	        thisDiv.click(function() {
 	        	currentDirectory = currentDirectory + $(this).text() + "/";
 	        	changeDirectory();
@@ -33,29 +38,30 @@ function getPhotoes() {
 	      });
 	      $("img").mouseover(function() {$(this).animate({"opacity": "1"});});
 		  $("img").mouseout(function() {$(this).animate({"opacity": "0.85"});});
-	
-			$(document).keyup(function(event) {
-				documentKeyupEvent(event);
-		    });
 	});
 }
 
 function changeDirectory() {
 	removeAll();
 	if (currentDirectory != null && currentDirectory != "") {
-		thisDiv = $("<div/>").attr("class", "directory").text("up").appendTo("#images");
+		thisDiv = $("<div/>").attr("class", "directory").appendTo("#directories");
+		$("<span/>").text("Back").appendTo(thisDiv);
         thisDiv.click(function() {
         	currentDirectory = currentDirectory.substring(0,currentDirectory.substring(0, currentDirectory.length -1).lastIndexOf("/"));
         	changeDirectory();
         });
 	}
+	//$("#images").show();
 	getDirectories();
 	getPhotoes();
 }
 
 function removeAll() {
-	$(".image").remove();
+	directories = new Array();
+	photoes = new Array();
+//	$("#images").hide('blind', { direction: 'vertical' }, 1000);
 	$(".directory").remove();
+	$(".image").remove();
 }
 
 function documentKeyupEvent(event) {
@@ -84,7 +90,7 @@ function showImage(imageId) {
 		$("<div/>").attr("id", "imageNav").appendTo("#imageContainer");
 		$('<a border="0"/>').attr("id", "imageNavPrev").appendTo("#imageNav");
 		$('<a border="0"/>').attr("id", "imageNavNext").appendTo("#imageNav");
-		$("#imageNavPrev").click(function(){showImage(currentPhoto - 1); $("#image").focus()});
+		$("#imageNavPrev").click(function(){showImage(currentPhoto - 1);});
 		$("#imageNavNext").click(function(){showImage(currentPhoto + 1);});
 		$("#imageTitle").click(function(){showEditImageTitle();});
 		$("<img/>").attr("id", "image").appendTo("#imageContainer");
