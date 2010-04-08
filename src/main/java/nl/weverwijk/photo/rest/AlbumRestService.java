@@ -17,9 +17,7 @@ import nl.weverwijk.photo.rest.filter.ImageFileFilter;
 import nl.weverwijk.photo.rest.properties.PropertiesHelper;
 
 @Path("/album")
-public class AlbumRestService {
-	public static final String PHOTO_BASE_LOCATION = "D:/data/documenten/My Pictures/2009_01_09/jpg";
-//	public static final String PHOTO_BASE_LOCATION = "/Users/rolin/projects/rweverwijk/restPhotoService/src/main/webapp/images";	
+public class AlbumRestService {	
 
 	@Path("photo")
 	@GET
@@ -32,7 +30,7 @@ public class AlbumRestService {
 	@GET
 	@Produces( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	public List<Photo> getPhotos(@PathParam("many") String directory) {
-		String searchDirectory = AlbumRestService.PHOTO_BASE_LOCATION + "/" + directory;
+		String searchDirectory = PropertiesHelper.PHOTO_BASE_LOCATION + "/" + directory;
 		System.out.printf("The searchDirectory is: %s", searchDirectory);
 		
 		List<Photo> result = new ArrayList<Photo>();
@@ -63,7 +61,7 @@ public class AlbumRestService {
 	@Produces( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	public List<Directory> getDirs(@PathParam("many") String directory) {
 		List<Directory> result = new ArrayList<Directory>();
-		String searchDirectory = PhotoRestService.PHOTO_BASE_LOCATION + "/" + directory;
+		String searchDirectory = PropertiesHelper.PHOTO_BASE_LOCATION + "/" + directory;
 		System.out.printf("The searchDirectory is: %s", searchDirectory);
 		File path = new File(searchDirectory);
 		

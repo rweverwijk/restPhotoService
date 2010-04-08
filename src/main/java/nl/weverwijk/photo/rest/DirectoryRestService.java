@@ -12,6 +12,7 @@ import javax.ws.rs.core.MediaType;
 
 import nl.weverwijk.photo.rest.entity.Directory;
 import nl.weverwijk.photo.rest.filter.DirFileFilter;
+import nl.weverwijk.photo.rest.properties.PropertiesHelper;
 
 @Path("/directory")
 public class DirectoryRestService {	
@@ -28,7 +29,7 @@ public class DirectoryRestService {
 	@Produces( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	public List<Directory> getDirs(@PathParam("many") String directory) {
 		List<Directory> result = new ArrayList<Directory>();
-		String searchDirectory = PhotoRestService.PHOTO_BASE_LOCATION + "/" + directory;
+		String searchDirectory = PropertiesHelper.PHOTO_BASE_LOCATION + "/" + directory;
 		System.out.printf("The searchDirectory is: %s", searchDirectory);
 		File path = new File(searchDirectory);
 		

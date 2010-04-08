@@ -5,15 +5,15 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Properties;
 
-import nl.weverwijk.photo.rest.PhotoRestService;
-
 public class PropertiesHelper {
+	public static final String PHOTO_BASE_LOCATION = "/Users/rolin/projects/rweverwijk/restPhotoService/src/main/webapp/images";
+	
 
 	public static Properties getProperties(String dir) {
 		// Read properties file.
 		Properties properties = new Properties();
 		try {
-			properties.load(new FileInputStream(PhotoRestService.PHOTO_BASE_LOCATION + (dir != null ? dir : "") + "/.rwAlbum"));
+			properties.load(new FileInputStream(PHOTO_BASE_LOCATION + (dir != null ? dir : "") + "/.rwAlbum"));
 		} catch (IOException e) {
 		}
 		return properties;
@@ -22,7 +22,7 @@ public class PropertiesHelper {
 	public static void saveProperties(String dir, Properties properties) {
 		// Write properties file.
 		try {
-			properties.store(new FileOutputStream(PhotoRestService.PHOTO_BASE_LOCATION + (dir != null ? dir : "") + "/.rwAlbum"), null);
+			properties.store(new FileOutputStream(PHOTO_BASE_LOCATION + (dir != null ? dir : "") + "/.rwAlbum"), null);
 		} catch (IOException e) {
 		}
 	}

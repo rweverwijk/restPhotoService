@@ -15,8 +15,6 @@ import nl.weverwijk.photo.rest.properties.PropertiesHelper;
 
 @Path("/photo")
 public class PhotoRestService {
-	public static final String PHOTO_BASE_LOCATION = "D:/data/documenten/My Pictures/2009_01_09/jpg";
-//	public static final String PHOTO_BASE_LOCATION = "/Users/rolin/projects/rweverwijk/restPhotoService/src/main/webapp/images";	
 	
 	@GET
 	@Produces({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})
@@ -31,7 +29,7 @@ public class PhotoRestService {
 	public Photo getPhoto(@PathParam("many") String directory, @PathParam("id") String id) {
 		System.out.printf("getPhoto(%s, %s) called", directory, id);
 		Properties props = PropertiesHelper.getProperties(directory);
-		File image = new File(PHOTO_BASE_LOCATION + "/" + directory + "/" + id);
+		File image = new File(PropertiesHelper.PHOTO_BASE_LOCATION + "/" + directory + "/" + id);
 		String name = props.getProperty(image.getName() + ".name", image.getName());
 		String description = props.getProperty(image.getName() + ".description", "<description>");
 		Photo photo = new Photo(image.getName(), name, description, "images/" + image.getName(), "images/small/" + image.getName());
