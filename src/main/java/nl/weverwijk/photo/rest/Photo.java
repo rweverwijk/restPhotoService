@@ -22,7 +22,7 @@ public class Photo {
 	public Photo(String id, String fileName, String description,
 			String originalUrl, String thumbnailUrl) {
 		super();
-		this.setId(id);
+		this.id = id;
 		this.name = fileName;
 		this.description = description;
 		this.originalUrl = originalUrl;

@@ -8,12 +8,13 @@ public class ImageFileFilter implements FileFilter {
 	private final String[] okFileExtensions = new String[] { "jpg" };
 	
 	@Override
-	public boolean accept(File file) {
+	public boolean accept(final File file) {
+		boolean result = false;
 		for (String extension : okFileExtensions) {
 			if (file.getName().toLowerCase().endsWith(extension)) {
-				return true;
+				result =  true;
 			}
 		}
-		return false;
+		return result;
 	}
 }

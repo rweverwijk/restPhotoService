@@ -17,11 +17,11 @@ import nl.weverwijk.photo.rest.filter.ImageFileFilter;
 import nl.weverwijk.photo.rest.properties.PropertiesHelper;
 
 @Path("/album")
-public class AlbumRestService {	
+public class AlbumRestService {
 
-	@Path("photo")
+    @Path("photo")
 	@GET
-	@Produces( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	public List<Photo> getPhotos() {
 		return getPhotos("");
 	}
@@ -29,15 +29,15 @@ public class AlbumRestService {
 	@Path("photo/{many:.*}")
 	@GET
 	@Produces( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-	public List<Photo> getPhotos(@PathParam("many") String directory) {
+	public List<Photo> getPhotos(@PathParam("many") final String directory) {
 		String searchDirectory = PropertiesHelper.PHOTO_BASE_LOCATION + "/" + directory;
 		System.out.printf("The searchDirectory is: %s", searchDirectory);
 		
-		List<Photo> result = new ArrayList<Photo>();
-		Properties props = PropertiesHelper.getProperties(directory);
+		final List<Photo> result = new ArrayList<Photo>();
+		final Properties props = PropertiesHelper.getProperties(directory);
 		File path = new File(searchDirectory);
 		
-		File[] files = path.listFiles(new ImageFileFilter());
+		final File[] files = path.listFiles(new ImageFileFilter());
 		if (files != null) {
 			for (File file : files) {
 				String name = props.getProperty(file.getName() + ".name", file.getName());
