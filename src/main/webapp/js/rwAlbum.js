@@ -151,7 +151,11 @@ function editImageTitle() {
 		//alert("it works!");
 		},
 		error:function(res){
-			//alert("Bad thing happend! " + res.statusText);
+			if (res.status == 403) {
+			   alert("Dat mag niet he?!");
+			} else {
+			    alert("oeps: " + res.statusText);
+			}
 		}
 	});
 }
