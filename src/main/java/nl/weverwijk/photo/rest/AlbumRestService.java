@@ -35,7 +35,7 @@ public class AlbumRestService {
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @RolesAllowed("friend")
     public List<Photo> getPhotos(@PathParam("many") final String directory) {
-        String searchDirectory = PropertiesHelper.PHOTO_BASE_LOCATION + "/" + directory;
+        String searchDirectory = PropertiesHelper.PHOTO_BASE_LOCATION + directory;
         System.out.printf("The searchDirectory is: %s", searchDirectory);
 
         final List<Photo> result = new ArrayList<Photo>();
@@ -47,7 +47,7 @@ public class AlbumRestService {
             for (File file : files) {
                 String name = props.getProperty(file.getName() + ".name", file.getName());
                 String description = props.getProperty(file.getName() + ".description", "<description>");
-                Photo photo = new Photo(file.getName(), name, description, "images/" + file.getName(), "images/small/" + file.getName());
+                Photo photo = new Photo(file.getName(), name, description, "images/" + file.getName(), String.format("images/%s/small/", directory) + file.getName());
                 result.add(photo);
             }
         }
@@ -76,7 +76,9 @@ public class AlbumRestService {
         File[] files = path.listFiles(new DirFileFilter());
         if (files != null) {
             for (File file : files) {
-                result.add(new Directory(file.getName()));
+                if (!file.getName().equals("small")) {
+                    result.add(new Directory(file.getName()));
+                }
             }
         }
         return result;

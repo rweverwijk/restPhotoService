@@ -1,34 +1,52 @@
 var directories = new Array();
 var photoes = new Array();
 var currentPhoto;
-var currentDirectory = "";
 
-getDirectories();
-getPhotoes();
+drawAlbum();
 
+// bind keys
 $(document).keyup(function(event) {
 	documentKeyupEvent(event);
 });
 
+function drawAlbum() {
+	removeAll();
+	// if we are in a subdirectory we want to have a back button
+	if (getDirectory() != null && getDirectory() != "") {
+		thisDiv = $("<div/>").attr("class", "directory").appendTo("#directories");
+		$("<span/>").text("Back").appendTo(thisDiv);
+        thisDiv.click(function() {
+            var currentDirectory = getDirectory();
+        	currentDirectory = currentDirectory.substring(0,currentDirectory.substring(0, currentDirectory.length -1).lastIndexOf("/")-1);
+        	setDirectory(currentDirectory);
+        });
+	}
+	// rebuild page
+	drawDirectories();
+	drawPhotoes();
+}
+
 //directory
-function getDirectories() {
-	$.getJSON("http://localhost:8080/restPhotoService/rest/album/directory/" + currentDirectory,
+function drawDirectories() {
+    getDirectory();
+	$.getJSON("http://localhost:8080/restPhotoService/rest/album/directory/" + getDirectory(),
 	    function(data){
-	      $.each(data.Directory, function(i,item){
-	    	directories.push(item);
-	        thisDiv = $("<div/>").attr("class", "directory").appendTo("#directories");
-	        $("<span/>").text(item).appendTo(thisDiv);
-	        thisDiv.click(function() {
-	        	currentDirectory = currentDirectory + $(this).text() + "/";
-	        	changeDirectory();
-	        });
-	      });
+	      if (data != null) {
+              $.each(data.Directory, function(i,item){
+                directories.push(item);
+                thisDiv = $("<div/>").attr("class", "directory").appendTo("#directories");
+                $("<span/>").text(item).appendTo(thisDiv);
+                thisDiv.click(function() {
+                    setDirectory(getDirectory() + $(this).text() + "/");
+                });
+              });
+	      }
 	});
 }
 
 // photo
-function getPhotoes() {
-	$.getJSON("http://localhost:8080/restPhotoService/rest/album/photo/" + currentDirectory,
+function drawPhotoes() {
+	$.getJSON("http://localhost:8080/restPhotoService/rest/album/photo/" + getDirectory(),
 	    function(data){
 	      $.each(data.Photo, function(i,item){
 	    	photoes.push(item);
@@ -41,27 +59,28 @@ function getPhotoes() {
 	});
 }
 
-function changeDirectory() {
-	removeAll();
-	if (currentDirectory != null && currentDirectory != "") {
-		thisDiv = $("<div/>").attr("class", "directory").appendTo("#directories");
-		$("<span/>").text("Back").appendTo(thisDiv);
-        thisDiv.click(function() {
-        	currentDirectory = currentDirectory.substring(0,currentDirectory.substring(0, currentDirectory.length -1).lastIndexOf("/"));
-        	changeDirectory();
-        });
-	}
-	//$("#images").show();
-	getDirectories();
-	getPhotoes();
-}
-
 function removeAll() {
 	directories = new Array();
 	photoes = new Array();
-//	$("#images").hide('blind', { direction: 'vertical' }, 1000);
 	$(".directory").remove();
 	$(".image").remove();
+}
+
+function getDirectory() {
+    var dir = "" + window.location;
+    if (dir.indexOf("#") == -1) {
+        dir = "";
+    } else {
+        dir = dir.substring(dir.indexOf("#") + 1, dir.length);
+    }
+    return dir;
+}
+
+function setDirectory(dir) {
+    var currentDirectory = getDirectory();
+    currentDirectory = currentDirectory.substring(0,currentDirectory.substring(0, currentDirectory.length -1).lastIndexOf("/"));
+    window.location = "http://localhost:8080/restPhotoService/#/" + dir;
+    drawAlbum();
 }
 
 function documentKeyupEvent(event) {
